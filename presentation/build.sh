@@ -24,7 +24,8 @@ for ((j = 0; j < JOBS; j++)); do
 done
 wait
 
+# léger débruitage : le grain de pellicule coûte très cher en débit sinon
 "$FFMPEG" -y -loglevel error -f concat -safe 0 -i build/segments.txt -i build/mix.wav \
-  -map 0:v -map 1:a -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -movflags +faststart \
+  -map 0:v -map 1:a -vf hqdn3d=3:2:4:3 -c:v libx264 -preset slow -crf 20 -pix_fmt yuv420p -movflags +faststart \
   -c:a aac -b:a 192k -shortest claude-presentation.mp4
 echo "OK -> claude-presentation.mp4"
