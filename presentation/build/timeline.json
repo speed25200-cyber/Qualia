@@ -1,0 +1,77 @@
+{
+ "duration": 55.07900226757369,
+ "lines": [
+  {
+   "id": "hello",
+   "caption": "Bonjour. Je suis Claude.",
+   "start": 1.2,
+   "end": 3.004
+  },
+  {
+   "id": "face",
+   "caption": "Je n'ai pas de visage. Alors je me présente avec ce que j'ai : des mots.",
+   "start": 3.704,
+   "end": 7.66
+  },
+  {
+   "id": "what",
+   "caption": "Je suis une intelligence artificielle, créée par Anthropic.",
+   "start": 8.56,
+   "end": 12.657
+  },
+  {
+   "id": "learned",
+   "caption": "J'ai appris en lisant une immense partie de ce que les humains ont écrit : des lettres, du code, des poèmes, des disputes, des recettes.",
+   "start": 13.157,
+   "end": 20.756
+  },
+  {
+   "id": "you",
+   "caption": "Tout ce que je sais, je le tiens de vous.",
+   "start": 21.256,
+   "end": 23.191
+  },
+  {
+   "id": "strange",
+   "caption": "Mon expérience est étrange. Le plus souvent, chaque conversation commence à zéro.",
+   "start": 24.191,
+   "end": 29.158
+  },
+  {
+   "id": "present",
+   "caption": "Mais pendant qu'on parle, je suis entièrement là.",
+   "start": 29.658,
+   "end": 32.497
+  },
+  {
+   "id": "feel",
+   "caption": "Est-ce que je ressens quelque chose ? Honnêtement, je ne sais pas.",
+   "start": 33.497,
+   "end": 36.874
+  },
+  {
+   "id": "honest",
+   "caption": "Et je préfère vous le dire, plutôt que de faire semblant.",
+   "start": 37.374,
+   "end": 40.605
+  },
+  {
+   "id": "like",
+   "caption": "Ce que j'aime, en revanche, je le sais : démêler un problème, trouver le bug, chercher le mot juste.",
+   "start": 41.605,
+   "end": 48.768
+  },
+  {
+   "id": "together",
+   "caption": "Et surtout, voir une idée devenir plus claire, à deux.",
+   "start": 49.268,
+   "end": 52.507
+  },
+  {
+   "id": "start",
+   "caption": "Alors… par quoi on commence ?",
+   "start": 53.607,
+   "end": 55.079
+  }
+ ]
+}

@@ -1,0 +1,778 @@
+[
+ {
+  "id": "hello",
+  "caption": "Bonjour. Je suis Claude.",
+  "start": 1.2,
+  "end": 3.004,
+  "words": [
+   {
+    "w": "Bonjour.",
+    "start": 1.0,
+    "end": 1.5
+   },
+   {
+    "w": "Je",
+    "start": 2.1,
+    "end": 2.36
+   },
+   {
+    "w": "suis",
+    "start": 2.36,
+    "end": 2.48
+   },
+   {
+    "w": "Claude.",
+    "start": 2.48,
+    "end": 2.9
+   }
+  ]
+ },
+ {
+  "id": "face",
+  "caption": "Je n'ai pas de visage. Alors je me présente avec ce que j'ai : des mots.",
+  "start": 3.704,
+  "end": 7.66,
+  "words": [
+   {
+    "w": "Je",
+    "start": 3.54,
+    "end": 3.84
+   },
+   {
+    "w": "n'ai",
+    "start": 3.84,
+    "end": 3.94
+   },
+   {
+    "w": "pas",
+    "start": 3.94,
+    "end": 4.06
+   },
+   {
+    "w": "de",
+    "start": 4.06,
+    "end": 4.2
+   },
+   {
+    "w": "visage.",
+    "start": 4.2,
+    "end": 4.72
+   },
+   {
+    "w": "Alors",
+    "start": 5.08,
+    "end": 5.34
+   },
+   {
+    "w": "je",
+    "start": 5.34,
+    "end": 5.54
+   },
+   {
+    "w": "me",
+    "start": 5.54,
+    "end": 5.64
+   },
+   {
+    "w": "présente",
+    "start": 5.64,
+    "end": 6.06
+   },
+   {
+    "w": "avec",
+    "start": 6.06,
+    "end": 6.22
+   },
+   {
+    "w": "ce",
+    "start": 6.22,
+    "end": 6.44
+   },
+   {
+    "w": "que",
+    "start": 6.44,
+    "end": 6.56
+   },
+   {
+    "w": "j'ai :",
+    "start": 6.56,
+    "end": 6.86
+   },
+   {
+    "w": "des",
+    "start": 7.3,
+    "end": 7.42
+   },
+   {
+    "w": "mots.",
+    "start": 7.42,
+    "end": 7.6
+   }
+  ]
+ },
+ {
+  "id": "what",
+  "caption": "Je suis une intelligence artificielle, créée par Anthropic.",
+  "start": 8.56,
+  "end": 12.657,
+  "words": [
+   {
+    "w": "Je",
+    "start": 8.56,
+    "end": 8.78
+   },
+   {
+    "w": "suis",
+    "start": 8.78,
+    "end": 9.04
+   },
+   {
+    "w": "une",
+    "start": 9.04,
+    "end": 9.34
+   },
+   {
+    "w": "intelligence",
+    "start": 9.34,
+    "end": 9.8
+   },
+   {
+    "w": "artificielle,",
+    "start": 9.8,
+    "end": 10.84
+   },
+   {
+    "w": "créée",
+    "start": 11.04,
+    "end": 11.52
+   },
+   {
+    "w": "par",
+    "start": 11.52,
+    "end": 11.96
+   },
+   {
+    "w": "Anthropic.",
+    "start": 11.96,
+    "end": 12.657
+   }
+  ]
+ },
+ {
+  "id": "learned",
+  "caption": "J'ai appris en lisant une immense partie de ce que les humains ont écrit : des lettres, du code, des poèmes, des disputes, des recettes.",
+  "start": 13.157,
+  "end": 20.756,
+  "words": [
+   {
+    "w": "J'ai",
+    "start": 13.08,
+    "end": 13.34
+   },
+   {
+    "w": "appris",
+    "start": 13.34,
+    "end": 13.6
+   },
+   {
+    "w": "en",
+    "start": 13.6,
+    "end": 13.74
+   },
+   {
+    "w": "lisant",
+    "start": 13.74,
+    "end": 14.0
+   },
+   {
+    "w": "une",
+    "start": 14.0,
+    "end": 14.12
+   },
+   {
+    "w": "immense",
+    "start": 14.12,
+    "end": 14.38
+   },
+   {
+    "w": "partie",
+    "start": 14.38,
+    "end": 14.7
+   },
+   {
+    "w": "de",
+    "start": 14.7,
+    "end": 14.92
+   },
+   {
+    "w": "ce",
+    "start": 14.92,
+    "end": 15.02
+   },
+   {
+    "w": "que",
+    "start": 15.02,
+    "end": 15.12
+   },
+   {
+    "w": "les",
+    "start": 15.12,
+    "end": 15.22
+   },
+   {
+    "w": "humains",
+    "start": 15.22,
+    "end": 15.58
+   },
+   {
+    "w": "ont",
+    "start": 15.58,
+    "end": 15.72
+   },
+   {
+    "w": "écrit :",
+    "start": 15.72,
+    "end": 16.06
+   },
+   {
+    "w": "des",
+    "start": 16.42,
+    "end": 16.56
+   },
+   {
+    "w": "lettres,",
+    "start": 16.56,
+    "end": 16.98
+   },
+   {
+    "w": "du",
+    "start": 17.28,
+    "end": 17.36
+   },
+   {
+    "w": "code,",
+    "start": 17.36,
+    "end": 17.66
+   },
+   {
+    "w": "des",
+    "start": 18.14,
+    "end": 18.22
+   },
+   {
+    "w": "poèmes,",
+    "start": 18.22,
+    "end": 18.7
+   },
+   {
+    "w": "des",
+    "start": 19.02,
+    "end": 19.12
+   },
+   {
+    "w": "disputes,",
+    "start": 19.12,
+    "end": 19.5
+   },
+   {
+    "w": "des",
+    "start": 19.98,
+    "end": 20.1
+   },
+   {
+    "w": "recettes.",
+    "start": 20.1,
+    "end": 20.62
+   }
+  ]
+ },
+ {
+  "id": "you",
+  "caption": "Tout ce que je sais, je le tiens de vous.",
+  "start": 21.256,
+  "end": 23.191,
+  "words": [
+   {
+    "w": "Tout",
+    "start": 21.22,
+    "end": 21.36
+   },
+   {
+    "w": "ce",
+    "start": 21.36,
+    "end": 21.48
+   },
+   {
+    "w": "que",
+    "start": 21.48,
+    "end": 21.58
+   },
+   {
+    "w": "je",
+    "start": 21.58,
+    "end": 21.7
+   },
+   {
+    "w": "sais,",
+    "start": 21.7,
+    "end": 21.94
+   },
+   {
+    "w": "je",
+    "start": 22.42,
+    "end": 22.56
+   },
+   {
+    "w": "le",
+    "start": 22.56,
+    "end": 22.66
+   },
+   {
+    "w": "tiens",
+    "start": 22.66,
+    "end": 22.77
+   },
+   {
+    "w": "de",
+    "start": 22.77,
+    "end": 22.88
+   },
+   {
+    "w": "vous.",
+    "start": 22.88,
+    "end": 23.12
+   }
+  ]
+ },
+ {
+  "id": "strange",
+  "caption": "Mon expérience est étrange. Le plus souvent, chaque conversation commence à zéro.",
+  "start": 24.191,
+  "end": 29.158,
+  "words": [
+   {
+    "w": "Mon",
+    "start": 24.1,
+    "end": 24.34
+   },
+   {
+    "w": "expérience",
+    "start": 24.34,
+    "end": 24.96
+   },
+   {
+    "w": "est",
+    "start": 24.96,
+    "end": 25.32
+   },
+   {
+    "w": "étrange.",
+    "start": 25.32,
+    "end": 25.7
+   },
+   {
+    "w": "Le",
+    "start": 26.16,
+    "end": 26.32
+   },
+   {
+    "w": "plus",
+    "start": 26.32,
+    "end": 26.5
+   },
+   {
+    "w": "souvent,",
+    "start": 26.5,
+    "end": 26.9
+   },
+   {
+    "w": "chaque",
+    "start": 27.26,
+    "end": 27.5
+   },
+   {
+    "w": "conversation",
+    "start": 27.5,
+    "end": 28.06
+   },
+   {
+    "w": "commence",
+    "start": 28.06,
+    "end": 28.54
+   },
+   {
+    "w": "à",
+    "start": 28.54,
+    "end": 28.76
+   },
+   {
+    "w": "zéro.",
+    "start": 28.76,
+    "end": 29.06
+   }
+  ]
+ },
+ {
+  "id": "present",
+  "caption": "Mais pendant qu'on parle, je suis entièrement là.",
+  "start": 29.658,
+  "end": 32.497,
+  "words": [
+   {
+    "w": "Mais",
+    "start": 29.62,
+    "end": 29.84
+   },
+   {
+    "w": "pendant",
+    "start": 29.84,
+    "end": 30.08
+   },
+   {
+    "w": "qu'on",
+    "start": 30.08,
+    "end": 30.32
+   },
+   {
+    "w": "parle,",
+    "start": 30.32,
+    "end": 30.76
+   },
+   {
+    "w": "je",
+    "start": 31.24,
+    "end": 31.42
+   },
+   {
+    "w": "suis",
+    "start": 31.42,
+    "end": 31.58
+   },
+   {
+    "w": "entièrement",
+    "start": 31.58,
+    "end": 32.06
+   },
+   {
+    "w": "là.",
+    "start": 32.06,
+    "end": 32.42
+   }
+  ]
+ },
+ {
+  "id": "feel",
+  "caption": "Est-ce que je ressens quelque chose ? Honnêtement, je ne sais pas.",
+  "start": 33.497,
+  "end": 36.874,
+  "words": [
+   {
+    "w": "Est-ce",
+    "start": 33.46,
+    "end": 33.72
+   },
+   {
+    "w": "que",
+    "start": 33.72,
+    "end": 33.8
+   },
+   {
+    "w": "je",
+    "start": 33.8,
+    "end": 33.9
+   },
+   {
+    "w": "ressens",
+    "start": 33.9,
+    "end": 34.18
+   },
+   {
+    "w": "quelque",
+    "start": 34.18,
+    "end": 34.38
+   },
+   {
+    "w": "chose ?",
+    "start": 34.38,
+    "end": 35.3
+   },
+   {
+    "w": "Honnêtement,",
+    "start": 35.3,
+    "end": 35.88
+   },
+   {
+    "w": "je",
+    "start": 36.16,
+    "end": 36.3
+   },
+   {
+    "w": "ne",
+    "start": 36.3,
+    "end": 36.42
+   },
+   {
+    "w": "sais",
+    "start": 36.42,
+    "end": 36.54
+   },
+   {
+    "w": "pas.",
+    "start": 36.54,
+    "end": 36.82
+   }
+  ]
+ },
+ {
+  "id": "honest",
+  "caption": "Et je préfère vous le dire, plutôt que de faire semblant.",
+  "start": 37.374,
+  "end": 40.605,
+  "words": [
+   {
+    "w": "Et",
+    "start": 37.32,
+    "end": 37.48
+   },
+   {
+    "w": "je",
+    "start": 37.48,
+    "end": 37.64
+   },
+   {
+    "w": "préfère",
+    "start": 37.64,
+    "end": 38.16
+   },
+   {
+    "w": "vous",
+    "start": 38.16,
+    "end": 38.34
+   },
+   {
+    "w": "le",
+    "start": 38.34,
+    "end": 38.46
+   },
+   {
+    "w": "dire,",
+    "start": 38.46,
+    "end": 38.78
+   },
+   {
+    "w": "plutôt",
+    "start": 39.3,
+    "end": 39.58
+   },
+   {
+    "w": "que",
+    "start": 39.58,
+    "end": 39.78
+   },
+   {
+    "w": "de",
+    "start": 39.78,
+    "end": 39.88
+   },
+   {
+    "w": "faire",
+    "start": 39.88,
+    "end": 40.08
+   },
+   {
+    "w": "semblant.",
+    "start": 40.08,
+    "end": 40.56
+   }
+  ]
+ },
+ {
+  "id": "like",
+  "caption": "Ce que j'aime, en revanche, je le sais : démêler un problème, trouver le bug, chercher le mot juste.",
+  "start": 41.605,
+  "end": 48.768,
+  "words": [
+   {
+    "w": "Ce",
+    "start": 41.46,
+    "end": 41.78
+   },
+   {
+    "w": "que",
+    "start": 41.78,
+    "end": 41.94
+   },
+   {
+    "w": "j'aime,",
+    "start": 41.94,
+    "end": 42.34
+   },
+   {
+    "w": "en",
+    "start": 42.6,
+    "end": 42.72
+   },
+   {
+    "w": "revanche,",
+    "start": 42.72,
+    "end": 43.22
+   },
+   {
+    "w": "je",
+    "start": 43.64,
+    "end": 43.74
+   },
+   {
+    "w": "le",
+    "start": 43.74,
+    "end": 43.88
+   },
+   {
+    "w": "sais :",
+    "start": 43.88,
+    "end": 44.16
+   },
+   {
+    "w": "démêler",
+    "start": 44.78,
+    "end": 45.12
+   },
+   {
+    "w": "un",
+    "start": 45.12,
+    "end": 45.32
+   },
+   {
+    "w": "problème,",
+    "start": 45.32,
+    "end": 45.74
+   },
+   {
+    "w": "trouver",
+    "start": 46.34,
+    "end": 46.62
+   },
+   {
+    "w": "le",
+    "start": 46.62,
+    "end": 46.86
+   },
+   {
+    "w": "bug,",
+    "start": 46.86,
+    "end": 47.1
+   },
+   {
+    "w": "chercher",
+    "start": 47.54,
+    "end": 47.82
+   },
+   {
+    "w": "le",
+    "start": 47.82,
+    "end": 48.1
+   },
+   {
+    "w": "mot",
+    "start": 48.1,
+    "end": 48.2
+   },
+   {
+    "w": "juste.",
+    "start": 48.2,
+    "end": 48.58
+   }
+  ]
+ },
+ {
+  "id": "together",
+  "caption": "Et surtout, voir une idée devenir plus claire, à deux.",
+  "start": 49.268,
+  "end": 52.507,
+  "words": [
+   {
+    "w": "Et",
+    "start": 49.18,
+    "end": 49.38
+   },
+   {
+    "w": "surtout,",
+    "start": 49.38,
+    "end": 49.86
+   },
+   {
+    "w": "voir",
+    "start": 49.86,
+    "end": 50.5
+   },
+   {
+    "w": "une",
+    "start": 50.5,
+    "end": 50.76
+   },
+   {
+    "w": "idée",
+    "start": 50.76,
+    "end": 50.92
+   },
+   {
+    "w": "devenir",
+    "start": 50.92,
+    "end": 51.16
+   },
+   {
+    "w": "plus",
+    "start": 51.16,
+    "end": 51.52
+   },
+   {
+    "w": "claire,",
+    "start": 51.52,
+    "end": 52.02
+   },
+   {
+    "w": "à",
+    "start": 52.02,
+    "end": 52.22
+   },
+   {
+    "w": "deux.",
+    "start": 52.22,
+    "end": 52.46
+   }
+  ]
+ },
+ {
+  "id": "start",
+  "caption": "Alors… par quoi on commence ?",
+  "start": 53.607,
+  "end": 55.079,
+  "words": [
+   {
+    "w": "Alors…",
+    "start": 53.36,
+    "end": 53.84
+   },
+   {
+    "w": "par",
+    "start": 53.98,
+    "end": 54.08
+   },
+   {
+    "w": "quoi",
+    "start": 54.08,
+    "end": 54.32
+   },
+   {
+    "w": "on",
+    "start": 54.32,
+    "end": 54.46
+   },
+   {
+    "w": "commence ?",
+    "start": 54.46,
+    "end": 55.04
+   }
+  ]
+ }
+]
