@@ -5,3 +5,4 @@ build/features.npz
 build/whisper_medium.json
 stills/
 __pycache__/
+build/build.log
