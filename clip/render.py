@@ -16,9 +16,11 @@ from functools import lru_cache
 from pathlib import Path
 
 import imageio_ffmpeg
+import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
+import cine
 import fx
 from fx import BLACK, BOLD, CYAN, H, MEDIUM, MONO, RED, W, WHITE
 from lyrics import lines as lyric_lines
@@ -77,6 +79,15 @@ SECTIONS = [
     (85.3, "noescape"), (98.8, "verse2"), (126.75, "chorus2"), (143.0, "fading"),
     (155.0, "climax"), (178.0, "outro"),
 ]
+
+
+OPEN_FRAME = [(57.5, 85.3), (126.75, 143.0), (155.0, 178.0)]   # refrains : plein cadre
+
+
+def bar_height(t):
+    """Hauteur des bandes noires (format 2.39:1), qui s'ouvrent sur les refrains."""
+    o = max(ramp(t, a, a + 0.25) * (1 - ramp(t, b - 0.3, b)) for a, b in OPEN_FRAME)
+    return 138.0 * (1 - o)
 
 
 def section(t):
@@ -265,22 +276,23 @@ def eye_reticles(img, t, cx, cy, zoom, color=RED, name="android"):
 def hud(img, t, fi, label="", color=CYAN, alpha=0.8):
     m = np.zeros((H, W), np.float32)
     L = 60
-    for (x, y, sx, sy) in ((50, 50, 1, 1), (W - 50, 50, -1, 1), (50, H - 50, 1, -1), (W - 50, H - 50, -1, -1)):
+    top, bot = int(bar_height(t)) + 34, H - int(bar_height(t)) - 34
+    for (x, y, sx, sy) in ((50, top, 1, 1), (W - 50, top, -1, 1), (50, bot, 1, -1), (W - 50, bot, -1, -1)):
         xa, xb = sorted((x, x + sx * L))
         ya, yb = sorted((y, y + sy * L))
         m[y - 1:y + 2, xa:xb] = 1
         m[ya:yb, x - 1:x + 2] = 1
     img = fx.paint(img, m, color, alpha)
     tc = f"{int(t // 60):02d}:{int(t % 60):02d}:{fi % FPS:02d}"
-    img = fx.paint(img, fx.text_mask(f"REC ● {tc}", MONO, 24, W - 80, 88, "rm"), color, alpha)
+    img = fx.paint(img, fx.text_mask(f"REC ● {tc}", MONO, 24, W - 80, top + 38, "rm"), color, alpha)
     if label:
-        img = fx.paint(img, fx.text_mask(label, MONO, 24, 80, 88, "lm"), color, alpha)
+        img = fx.paint(img, fx.text_mask(label, MONO, 24, 80, top + 38, "lm"), color, alpha)
     # niveaux audio
     bars = [feat("sub", t), feat("bass", t), feat("mid", t), feat("high", t), feat("rms", t)]
     for i, v in enumerate(bars):
         h = int(min(v, 1.2) * 60)
         x = 80 + i * 14
-        img[H - 80 - h:H - 80, x:x + 9] = img[H - 80 - h:H - 80, x:x + 9] * (1 - alpha) + color * alpha
+        img[bot - 30 - h:bot - 30, x:x + 9] = img[bot - 30 - h:bot - 30, x:x + 9] * (1 - alpha) + color * alpha
     return img
 
 
@@ -313,20 +325,27 @@ def draw_lyrics(img, t, fi):
         img = fx.glitch_text(img, txt, BOLD, 110, W / 2 + jitter, H / 2, fade, split=6, tracking=14)
     elif style == "line":
         # révélation mot à mot, façon terminal
-        shown = [(w, ts) for w, ts in ln["words"] if ts <= t + 0.05]
-        if not shown:
+        # chaque mot arrive en fondu, en remontant de quelques pixels
+        size = 58 if len(ln["text"]) < 26 else 46
+        ly = int(H - bar_height(t) - 80)
+        if not any(ts <= t + 0.05 for _, ts in ln["words"]):
             return img
-        head = " ".join(w for w, _ in shown[:-1])
-        last, ts = shown[-1]
-        last = fx.scramble(last, min(1.0, (t - ts) / 0.18), fi)       # le dernier mot se « décode »
-        txt = (head + " " + last).strip()
-        size = 64 if len(ln["text"]) < 26 else 52
-        blink = fade * (0.4 + 0.6 * (fi // 8 % 2))
-        img[H - 150 - size // 2:H - 150 + size // 2, 92:104] = (
-            img[H - 150 - size // 2:H - 150 + size // 2, 92:104] * (1 - blink) + RED * blink)
-        bright = float(fx.luminance(img[H - 190:H - 110, 100:900]).mean()) > 0.6
-        img = fx.glitch_text(img, txt, BOLD, size, 130, H - 150, fade, split=4, anchor="lm", tracking=4,
-                             color=BLACK if bright else WHITE)
+        blink = fade * (0.55 + 0.45 * math.cos(t * 9))
+        img[ly - size // 2:ly + size // 2, 92:99] = (
+            img[ly - size // 2:ly + size // 2, 92:99] * (1 - blink) + RED * blink)
+        bright = float(fx.luminance(img[ly - 40:ly + 40, 100:900]).mean()) > 0.6
+        col = BLACK if bright else WHITE
+        f = fx.font(BOLD, size)
+        x = 124.0
+        for w, ts in ln["words"]:
+            if ts > t + 0.05:
+                break
+            age = t - ts
+            a = fade * ramp(age, -0.05, 0.12)
+            dy = int(14 * (1 - ramp(age, -0.05, 0.18)))
+            img = fx.glitch_text(img, w, BOLD, size, int(x), ly + dy, a, split=3 + 6 * math.exp(-age / 0.1),
+                                 anchor="lm", tracking=4, color=col)
+            x += f.getlength(w + " ") + 4 * (len(w) + 1)
     elif style == "slam":
         cur = None
         for w, ts in ln["words"]:
@@ -340,6 +359,10 @@ def draw_lyrics(img, t, fi):
         scale = 1 + 0.25 * math.exp(-age / 0.07)
         size = int(min(300, 1700 / max(len(w), 3) * 1.35) * scale)
         dx = int(np.random.default_rng(fi).integers(-8, 9) * math.exp(-age / 0.15))
+        if age < 0.16:                                  # traînée de zoom à l'impact
+            for k, (sc, al) in enumerate(((1.35, 0.18), (1.18, 0.3))):
+                img = fx.glitch_text(img, w, BOLD, int(size * sc), W / 2, H / 2, a * al * (1 - age / 0.16),
+                                     split=0, tracking=6)
         img = fx.glitch_text(img, w, BOLD, size, W / 2 + dx, H / 2, a, split=10 * math.exp(-age / 0.2) + 3, tracking=6)
     elif style == "grid":
         a = fade * ramp(t, ln["start"], ln["start"] + 0.1)
@@ -358,18 +381,38 @@ def draw_lyrics(img, t, fi):
 # ---------------------------------------------------------------------------
 
 def shake(t, amount):
-    r = np.random.default_rng(int(t * FPS))
-    return r.uniform(-amount, amount), r.uniform(-amount, amount)
+    """Tremblement de caméra à l'épaule : bruit lisse (somme de sinus), pas de sautillement."""
+    dx = (math.sin(t * 23.1) + 0.6 * math.sin(t * 37.7 + 1.1) + 0.35 * math.sin(t * 61.3 + 2.3)) / 1.95
+    dy = (math.sin(t * 19.7 + 0.4) + 0.6 * math.sin(t * 41.9 + 2.0) + 0.35 * math.sin(t * 57.1 + 0.7)) / 1.95
+    return dx * amount, dy * amount
 
 
-def city(t, cx=0.5, cy=0.5, zoom=1.0, shake_amt=0.0, rot=0.0):
+def whip(img, t, events, dur=0.075, strength=90):
+    """Flou de filé sur les premières images après une coupe."""
+    k = since(events, t)
+    if k < dur:
+        n = int(strength * (1 - k / dur)) | 1
+        img = cv2.blur(img, (n, 1))
+    return img
+
+
+PAR_BOOST = [0.0, 0.0]          # travelling latéral propre au plan en cours (monté par montage_shot)
+
+
+def auto_par(t):
+    """Flottement continu de la caméra : le premier plan glisse devant le fond."""
+    return (0.02 * math.sin(t * 0.41) + PAR_BOOST[0], 0.01 * math.sin(t * 0.29 + 1.3) + PAR_BOOST[1])
+
+
+def city(t, cx=0.5, cy=0.5, zoom=1.0, shake_amt=0.0, rot=0.0, par=None, dolly=0.0, focus=None, dof=0.0):
     dx, dy = shake(t, shake_amt)
-    return fx.camera("city", cx, cy, zoom, rot, dx, dy)
+    return cine.camera("city", cx, cy, zoom, rot, dx, dy, par or auto_par(t), dolly, focus, dof)
 
 
-def android(t, cx=0.5, cy=0.45, zoom=1.0, shake_amt=0.0, rot=0.0, name="android"):
+def android(t, cx=0.5, cy=0.45, zoom=1.0, shake_amt=0.0, rot=0.0, name="android", par=None, dolly=0.0,
+            focus=None, dof=0.0):
     dx, dy = shake(t, shake_amt)
-    return fx.camera(name, cx, cy, zoom, rot, dx, dy)
+    return cine.camera(name, cx, cy, zoom, rot, dx, dy, par or auto_par(t), dolly, focus, dof)
 
 
 CHORUS_SHOTS = ["eyes", "android_wide", "city_wide", "city_crop", "lasers", "android_sort", "chrome", "city_red"]
@@ -389,6 +432,16 @@ def pick(seq, bi, salt):
 
 def montage_shot(kind, t, bi, fi, kick):
     r = np.random.default_rng(bi)
+    lt = since(BEATS, t)
+    PAR_BOOST[0] = r.choice([-1, 1]) * 0.05 * min(lt, 0.6)       # chaque plan a son propre mouvement
+    PAR_BOOST[1] = r.uniform(-1, 1) * 0.02 * min(lt, 0.6)
+    try:
+        return _montage_shot(kind, t, bi, fi, kick, r)
+    finally:
+        PAR_BOOST[0] = PAR_BOOST[1] = 0.0
+
+
+def _montage_shot(kind, t, bi, fi, kick, r):
     z = 1 + 0.06 * kick
     if kind == "eyes":
         cx, cy, zz = 0.49, 0.345, 3.0 * z
@@ -461,7 +514,7 @@ def base_frame(t, fi):
     elif sec == "build":
         p = (t - t0) / (29.9 - t0)
         zoom = 1.05 + 0.75 * p ** 1.6 + 0.04 * kick
-        img = city(t, 0.5, 0.47, zoom, 0.0015 + 0.004 * bass)
+        img = city(t, 0.5, 0.47, zoom, 0.0015 + 0.004 * bass, dolly=0.5 * p ** 1.3)
         img = fx.grade(img, exposure=0.8 + 0.35 * feat("high", t), contrast=1.15)
         if snare > 0.5:
             img = fx.slices(fx.rgb_split(img, 10 * snare), rng, 5, 60)
@@ -481,6 +534,7 @@ def base_frame(t, fi):
             key = bi // hold
         kind = pick(CHORUS_SHOTS, key, 11)
         img = montage_shot(kind, t, key, fi, kick)
+        img = whip(img, t, BEATS)
         if snare > 0.6 and kind not in ("eyes",):
             img = img * 0.6 + RED * 0.4 * snare
         post.update(bloom=0.7)
@@ -508,7 +562,7 @@ def base_frame(t, fi):
                                        np.random.default_rng(wi * 31), 6 + wi)
             else:
                 kind = pick(CHORUS2_SHOTS, bi, 23)
-                img = montage_shot(kind, t, bi, fi, kick)
+                img = whip(montage_shot(kind, t, bi, fi, kick), t, BEATS)
             if snare > 0.6:
                 img = img * 0.55 + WHITE * 0.45 * snare
         post.update(bloom=0.75)
@@ -521,7 +575,7 @@ def base_frame(t, fi):
         eighth = t > 170.5
         key = bi * 2 + int((t - BEATS[bi]) * 4.5) if eighth else bi
         kind = pick(CHORUS2_SHOTS + ["scream", "scream_mouth"], key, 37)
-        img = montage_shot(kind, t, key, fi, kick)
+        img = whip(montage_shot(kind, t, key, fi, kick), t, BEATS)
         if snare > 0.5:
             img = fx.blocks(img, rng, 10)
         if kick > 0.8 and rng.random() < 0.25:
@@ -547,13 +601,15 @@ def verse1(t, fi, ln, kick, snare, bass, rng, post):
         img = fx.grade(img, exposure=1.1, tint=RED, tint_amt=0.3, contrast=1.15)
     elif text == "LIGHTS DECAY":
         flick = 0.45 + 0.55 * (1 - lt / 1.7) * (0.6 + 0.4 * rng.random())
-        img = fx.grade(city(t, 0.5, 0.45, 1.25), exposure=max(flick, 0.3))
+        img = fx.grade(city(t, 0.5, 0.45, 1.25, focus=0.95 - 0.8 * min(lt / 1.5, 1), dof=7),
+                       exposure=max(flick, 0.3))
     elif text == "VOICES GLITCH, FADE AWAY":
         img = city(t, 0.5, 0.45, 1.35)
         img = fx.blocks(fx.slices(img, rng, 8, 120), rng, int(6 + 10 * lt))
         post["static"] = min(0.65, 0.15 + lt * 0.15)
     elif text == "CHROME ON SKIN":
-        img = fx.grade(android(t, 0.61, 0.42, 2.3 + 0.12 * lt), tint=CYAN, tint_amt=0.15)
+        img = fx.grade(android(t, 0.61, 0.42, 2.3 + 0.12 * lt, focus=0.1 + 0.8 * ramp(lt, 0, 0.9), dof=9),
+                       tint=CYAN, tint_amt=0.15)
         post["rain"] = 0.2
     elif text == "EYES IN RED":
         cx, cy, z = 0.49, 0.345, 3.0 + 0.1 * lt
@@ -617,7 +673,8 @@ def verse2(t, fi, ln, kick, snare, bass, rng, post):
         img = ascii_face(t)
         post["bloom"] = 0.5
     elif text == "SYNTHETIC LOVE":
-        img = fx.grade(android(t, 0.5, 0.45, 1.2 + 0.05 * lt), tint=CYAN, tint_amt=0.3, contrast=0.95)
+        img = fx.grade(android(t, 0.5, 0.45, 1.2 + 0.05 * lt, focus=0.9, dof=5), tint=CYAN, tint_amt=0.3,
+                       contrast=0.95)
         post["bloom"] = 0.9
     elif text == "EMOTION DEAD":
         img = android(t, 0.5, 0.45, 1.28 + 0.05 * lt)
@@ -704,10 +761,11 @@ def frame(fi):
     t = fi / FPS
     img, post = base_frame(t, fi)
     if post.get("static"):
-        img = fx.mix_static(img, fi, post["static"])
+        img = fx.mix_static(img, fi, post["static"]) * (1 - post["static"] * (1 - fx.SCANLINES))
     if post.get("rain"):
-        img = fx.rain(img, t, post["rain"])
-    img = fx.bloom(np.clip(img, 0, 1.4), post.get("bloom", 0.45))
+        img = cine.rain3(img, t, post["rain"] * 0.8)
+        img = cine.droplets(img, min(1.0, post["rain"] * 2.5))
+    img = fx.bloom(np.clip(img, 0, 1.4), post.get("bloom", 0.45) * 0.6)
     if post.get("hud"):
         img = hud(img, t, fi, post["hud"])
     img = draw_lyrics(img, t, fi)
@@ -716,7 +774,14 @@ def frame(fi):
         a = ramp(t, 183.0, 183.4) * (1 - ramp(t, 185.0, 185.45))
         img = fx.glitch_text(img, fx.scramble("SYNTHETIC SCREAM", min(1, (t - 183) / 0.6), fi), BOLD, 130,
                              W / 2, H / 2, a, split=8, tracking=18)
-    img = fx.finish(img, fi)
+    # carton-titre à l'entrée de la batterie
+    if 16.3 <= t < 20.0:
+        a = ramp(t, 16.3, 16.7) * (1 - ramp(t, 19.3, 20.0))
+        img = fx.glitch_text(img, "SYNTHETIC SCREAM", MEDIUM, 92, W / 2, H / 2 - 10, a, split=3, tracking=34)
+        wline = int(560 * ramp(t, 16.4, 17.2))
+        img[H // 2 + 52:H // 2 + 55, W // 2 - wline:W // 2 + wline] = (
+            img[H // 2 + 52:H // 2 + 55, W // 2 - wline:W // 2 + wline] * (1 - a) + RED * a)
+    img = cine.optics(img, t, fi, bar=bar_height(t), flare=post.get("flare", 0.35))
     return fx.to_uint8(img)
 
 
