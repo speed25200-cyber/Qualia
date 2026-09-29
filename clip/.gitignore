@@ -1,0 +1,7 @@
+build/song.wav
+build/seg*.mp4
+build/segments.txt
+build/features.npz
+build/whisper_medium.json
+stills/
+__pycache__/
