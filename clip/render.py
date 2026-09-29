@@ -670,8 +670,8 @@ def verse2(t, fi, ln, kick, snare, bass, rng, post):
         img = fx.grade(city(t, 0.5, 0.5, 1.1 + 0.02 * lt), exposure=0.55)
         img = img + neon_stars(t) * 1.3 + lasers(t, 0.25)
     elif text.startswith("MACHINE WHISPERS"):
-        img = ascii_face(t)
-        post["bloom"] = 0.5
+        img = ascii_face(t) * 1.6
+        post["bloom"] = 0.6
     elif text == "SYNTHETIC LOVE":
         img = fx.grade(android(t, 0.5, 0.45, 1.2 + 0.05 * lt, focus=0.9, dof=5), tint=CYAN, tint_amt=0.3,
                        contrast=0.95)
