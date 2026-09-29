@@ -1,0 +1,5 @@
+build/seg*.mp4
+build/segments.txt
+build/spec.png
+stills/
+__pycache__/
