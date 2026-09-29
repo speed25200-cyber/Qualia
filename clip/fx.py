@@ -234,7 +234,7 @@ def font(path, size):
     return ImageFont.truetype(path, size)
 
 
-@lru_cache(4096)
+@lru_cache(48)                  # masques plein écran de 8 Mo : cache court, sinon la mémoire explose
 def text_mask(text, path, size, anchor_x, anchor_y, anchor="mm", tracking=0):
     img = Image.new("L", (W, H), 0)
     d = ImageDraw.Draw(img)
