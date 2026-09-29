@@ -6,3 +6,5 @@ build/whisper_medium.json
 stills/
 __pycache__/
 build/build.log
+build/synthetic-scream-master.mp4
+build/x264*

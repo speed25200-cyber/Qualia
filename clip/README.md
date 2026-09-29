@@ -1,6 +1,7 @@
 # Synthetic Scream — clip
 
-**Le fichier : [`synthetic-scream.mp4`](synthetic-scream.mp4)** (1920×1080, 30 i/s, 3 min 05)
+**Le fichier : [`synthetic-scream.mp4`](synthetic-scream.mp4)** (1920×1080, 30 i/s, 3 min 05, version web
+~90 Mo ; le master à 33 Mbit/s, 770 Mo, se reconstruit avec `./build.sh`)
 
 Clip réalisé sur le morceau « Synthetic Scream » (darksynth / industriel,
 ~136 BPM, fa mineur). Tout part de l'écoute du morceau et de ses paroles :
@@ -35,6 +36,18 @@ Trois images seulement, générées avec Higgsfield (modèle GPT Image 2.5,
 | 2:35 | final (cris) | montage frénétique autour du cri, « SYNTHETIC / SCREAM », croches à la fin |
 | 2:58 | sortie | le signal se dégrade, extinction d'écran cathodique, titre |
 
+## Le rendu « cinéma »
+
+- **Caméra 2,5D** : une carte de profondeur par image (Depth Anything V2) fait
+  glisser le premier plan devant le fond ; travelling avant réel dans
+  l'avenue, mises au point qui basculent (*Chrome on skin*, *Lights decay*).
+- **Optique** : format 2.39:1 qui s'ouvre en plein cadre sur les refrains,
+  reflets anamorphiques sur les néons et les yeux, halo, aberration
+  chromatique, légère distorsion, flottement de pellicule, courbe film, grain.
+- **Matière** : pluie sur trois plans de profondeur, gouttes sur l'objectif qui
+  réfractent l'image, caméra à l'épaule, filé sur les coupes rapides.
+- **Netteté** : la ville (générée en 1K) est agrandie ×4 par Real-ESRGAN.
+
 ## Fabrication
 
 - `features.py` : analyse du morceau image par image (énergie, sub, basses,
@@ -44,12 +57,14 @@ Trois images seulement, générées avec Higgsfield (modèle GPT Image 2.5,
   (*Closed/Cold*, *Neural/Mineral*, *At/Of*) : corriger le texte et relancer.
 - `fx.py` : caméra sur image fixe, étalonnage, glitchs (RGB, tranches, blocs,
   tri de pixels, éclats), pluie, neige télé, halo, grain, lignes, texte.
+- `cine.py` : caméra 2,5D, profondeur de champ, pluie, gouttes, optique et pellicule.
+- `depth.py`, `upscale.py` : cartes de profondeur et agrandissement IA (ONNX, sur CPU).
 - `render.py` : le découpage ci-dessus, plan par plan.
 
 ```bash
-pip install numpy scipy pillow librosa imageio-ffmpeg
+pip install numpy scipy pillow librosa imageio-ffmpeg opencv-python-headless onnxruntime
 cp "Synthetic Scream.wav" build/song.wav   # le morceau n'est pas versionné
-./build.sh                                  # ~20 min sur 4 cœurs
+./build.sh                                  # ~45 min sur 4 cœurs, reprenable
 python3 render.py still 38.9 image.png      # une image isolée
 ```
 

@@ -30,5 +30,10 @@ fi
 ls build/chunks/ | grep -v part | grep "^c.*mp4$" | sed "s|^|file 'chunks/|; s|$|'|" > build/segments.txt
 "$FFMPEG" -y -loglevel error -f concat -safe 0 -i build/segments.txt -i build/song.wav \
   -map 0:v -map 1:a -c:v libx264 -preset slow -crf 21 -pix_fmt yuv420p -movflags +faststart \
-  -c:a aac -b:a 256k -shortest synthetic-scream.mp4
-echo "OK -> synthetic-scream.mp4"
+  -c:a aac -b:a 256k -shortest build/synthetic-scream-master.mp4
+# version web (< 100 Mo, limite de GitHub) : léger débruitage, deux passes
+"$FFMPEG" -v error -y -i build/synthetic-scream-master.mp4 -vf hqdn3d=2:1.5:3:2 -c:v libx264 -preset slow \
+  -b:v 3600k -pass 1 -passlogfile build/x264 -an -f mp4 /dev/null
+"$FFMPEG" -v error -y -i build/synthetic-scream-master.mp4 -vf hqdn3d=2:1.5:3:2 -c:v libx264 -preset slow \
+  -b:v 3600k -pass 2 -passlogfile build/x264 -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 192k synthetic-scream.mp4
+echo "OK -> build/synthetic-scream-master.mp4 (master) et synthetic-scream.mp4 (web)"
